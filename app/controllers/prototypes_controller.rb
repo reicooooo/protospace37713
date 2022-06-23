@@ -21,7 +21,7 @@ class PrototypesController < ApplicationController
   end
 
   def show
-    
+    @prototype = Prototype.find(params[:id])
     @comment = Comment.new
     @comments = @prototype.comments
   end
@@ -29,9 +29,14 @@ class PrototypesController < ApplicationController
 
   def edit
     @prototype = Prototype.find(params[:id])
-  end
+    unless current_user == @prototype.user
+      redirect_to root_path
+  end 
+    end
+
 
   def update
+    
     if @prototype.update(prototype_params)
      redirect_to prototype_path(@prototype)
     else
@@ -63,3 +68,4 @@ class PrototypesController < ApplicationController
     redirect_to root_path unless current_user == @prototype.user
   end
 end
+
